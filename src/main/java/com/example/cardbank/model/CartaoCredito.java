@@ -1,6 +1,7 @@
 package com.example.cardbank.model;
 
 import com.example.cardbank.model.enums.StatusCartao;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -25,6 +26,7 @@ public class CartaoCredito {
     private String tipo; // "FISICO" ou "VIRTUAL"
 
     @ManyToOne
+    @JsonBackReference
     @JoinColumn(name = "cliente_id")
     private Cliente cliente;
 }
