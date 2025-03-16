@@ -3,7 +3,7 @@ CREATE DATABASE IF NOT EXISTS cardbank_db;
 USE cardbank_db;
 
 -- Tabela Cliente
-CREATE TABLE Cliente (
+CREATE TABLE cliente (
                          id BIGINT PRIMARY KEY AUTO_INCREMENT,
                          cpf VARCHAR(14) NOT NULL UNIQUE,
                          email VARCHAR(255) NOT NULL,
@@ -19,12 +19,12 @@ CREATE TABLE Cliente (
 );
 
 -- Tabela CartaoCredito
-CREATE TABLE CartaoCredito (
-                               id BIGINT PRIMARY KEY AUTO_INCREMENT,
-                               numero VARCHAR(20) NOT NULL UNIQUE,
-                               nome_titular VARCHAR(255) NOT NULL,
-                               status VARCHAR(10) NOT NULL,
-                               tipo VARCHAR(10) NOT NULL,
-                               cliente_id BIGINT,
-                               CONSTRAINT fk_cliente FOREIGN KEY (cliente_id) REFERENCES Cliente(id)
+CREATE TABLE cartao_credito (
+                                id BIGINT PRIMARY KEY AUTO_INCREMENT,
+                                numero VARCHAR(20) NOT NULL UNIQUE,
+                                nome_titular VARCHAR(255) NOT NULL,
+                                status VARCHAR(10) NOT NULL,
+                                tipo VARCHAR(10) NOT NULL,
+                                cliente_id BIGINT,
+                                CONSTRAINT fk_cliente FOREIGN KEY (cliente_id) REFERENCES cliente(id)
 );
