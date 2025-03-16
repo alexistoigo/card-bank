@@ -45,6 +45,9 @@ public class CartaoCreditoService {
     public CartaoCredito ativarCartao(Long cartaoId) {
         CartaoCredito cartao = cartaoRepository.findById(cartaoId)
                 .orElseThrow(() -> new RuntimeException("Cartão não encontrado"));
+        if ("FISICO".equalsIgnoreCase(cartao.getTipo()) && cartao.getStatus() != StatusCartao.ENTREGUE) {
+            throw new RuntimeException("Cartão físico não foi entregue, não pode ser ativado.");
+        }
         cartao.setStatus(StatusCartao.ATIVADO);
         return cartaoRepository.save(cartao);
     }

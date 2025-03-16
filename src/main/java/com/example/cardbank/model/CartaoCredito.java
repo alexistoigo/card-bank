@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Data
 public class CartaoCredito {
@@ -29,4 +31,13 @@ public class CartaoCredito {
     @JsonBackReference
     @JoinColumn(name = "cliente_id")
     private Cliente cliente;
+
+    @Column
+    private Integer cvv;
+
+    @Column
+    private String trackingId;
+
+    @Column
+    private LocalDateTime expirationDate;
 }

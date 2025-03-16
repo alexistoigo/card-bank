@@ -26,5 +26,8 @@ CREATE TABLE cartao_credito (
                                 status VARCHAR(10) NOT NULL,
                                 tipo VARCHAR(10) NOT NULL,
                                 cliente_id BIGINT,
+                                cvv INT,
+                                tracking_id VARCHAR(50),
+                                expiration_date DATETIME,
                                 CONSTRAINT fk_cliente FOREIGN KEY (cliente_id) REFERENCES cliente(id)
 );
