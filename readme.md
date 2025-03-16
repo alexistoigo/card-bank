@@ -9,6 +9,9 @@ Este projeto implementa uma API REST para o gerenciamento de clientes e cartões
 - Criação, listagem, ativação, bloqueio e reemissão de cartões de crédito (físico e virtual).
 - Validação do CPF para garantir que o valor possua 11 dígitos (desconsiderando formatação) e não contenha caracteres inválidos.
 - Garantia de que um cartão virtual só seja criado se o cliente possuir pelo menos um cartão físico validado (ativado).
+- **Processamento de Webhooks:**
+   - Recebimento da resposta da transportadora sobre a entrega do cartão físico. Ao receber o webhook, o status do cartão é atualizado para **ENTREGUE** e não é ativado automaticamente, garantindo maior segurança.
+   - Atualização automática do CVV do cartão virtual, onde o número do CVV e a data de expiração são modificados periodicamente.
 
 ## Criacao Banco de Dados via docker
 
@@ -83,6 +86,37 @@ O arquivo com o sql para criacao das tabelas é [database.sql](https://github.co
 5. Reemitir Cartão
    Método: PUT
    URL: http://localhost:8080/clientes/{clienteId}/cartoes/reemitir/{cartaoId}?motivo=Perda
+
+### Endpoints para Webhooks
+
+1. Resposta da Transportadora sobre a Entrega do Cartão
+Método: POST
+URL: http://localhost:8080/webhooks/delivery
+Payload (JSON):
+```json
+   {
+      "tracking_id": "tracking id do cartão",
+      "delivery_status": "ENTREGUE",
+      "delivery_date": "2025-03-14T10:15:30",
+      "delivery_return_reason": "motivo em caso de problemas",
+      "delivery_address": "endereço de entrega"
+  }
+```
+       Observação: Ao receber o webhook, o status do cartão físico será atualizado para ENTREGUE. A ativação manual do cartão só poderá ocorrer após essa confirmação, garantindo maior segurança.
+
+2. Mudança Automática do CVV do Cartão Virtual
+Método: POST
+URL: http://localhost:8080/webhooks/cvv-change
+Payload (JSON):
+```json
+   {
+      "account_id": "processor account id",
+      "card_id": 123,
+      "next_cvv": 456,
+      "expiration_date": "2025-12-31T23:59:59"
+   }
+
+```
 
 ## Testes Unitários
 Os testes unitários do projeto estão localizados na pasta src/test/java/com/card-bank. Para executá-los, utilize:
